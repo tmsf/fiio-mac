@@ -130,8 +130,26 @@ exists, reads 0, and `AudioObjectSetPropertyData` fails with `'nope'`
 driver, no override available), and the raw device must exist anyway because eqMac streams
 into it. Only the Bluetooth entry can be removed, by disconnecting Bluetooth.
 
-## 9. Final state
+## 9. Proxy Audio Device: works, no USB-mode condition
+
+Installed `brew install --cask proxy-audio-device` (1.1.0.1). The driver did not load at first:
+the cask's privileged step had been retried after a manual copy, leaving a second
+`ProxyAudioDevice.driver` nested inside the first, so `codesign --verify` reported "unsealed
+contents present in the bundle root" and coreaudiod silently skipped it (no "Core Audio Driver
+(ProxyAudioDevice.driver)" host process, nothing in the log). Keeping one signed bundle and
+`killall coreaudiod` fixed it; `launchctl kickstart` was refused by SIP.
+
+Tested with eqMac quit so nothing else sat in the chain: `bin/padctl set-output <USB BTR5 UID>`
+(the default target had become the Bluetooth BTR5), `bin/setdefault ProxyAudioDevice_UID`,
+`tools/test_tones.sh`. `bin/running` showed the proxy device as default and system output and
+the USB BTR5 as the only streaming device. Heard: loud tone, quieter tone, silence for the muted
+one. The driver scales samples itself (`calculateVolumeFactors`), so the BTR5's USB mode is
+irrelevant here. Renamed the device to "FiiO BTR5 (Proxy)" with `bin/padctl set-name`.
+
+## 10. Final state (2026-10-26, end of day)
 
 - BTR5 in USB 2.0 mode (32-bit, high speed), no hardware volume control exposed.
-- eqMac running; "FiiO BTR5 (eqMac)" is default output and system-sounds output.
+- Proxy Audio Device driver loaded by Core Audio; its device "FiiO BTR5 (Proxy)" targets the USB
+  BTR5 and is default output and system-sounds output. No login item needed.
+- eqMac removed (app, HAL driver, helper). Background Music removed earlier.
 - Mac volume keys and mute control what comes out of the headphones.

@@ -6,8 +6,8 @@ volume control (which the firmware ignores, see [discovery](discovery.md)).
 
 | | License / cost | Software volume? | Verdict |
 | --- | --- | --- | --- |
-| **eqMac 1.9.2** | Volume/mute free; "Pro" extras paid. GitHub repo is Apache-2.0 but frozen at v1.3.2; current builds come from a private fork. | **Only when the target device has no hardware volume control.** Otherwise it forwards volume to the hardware. | Works with the BTR5 in USB 2.0 mode. Current setup. |
-| **Proxy Audio Device 1.1.0.1** | Unlicense (public domain) | **Always.** The driver multiplies samples by its own volume/mute controls and never touches the target's hardware volume. | Would work in either BTR5 mode. The open-source option. Not installed. |
+| **eqMac 1.9.2** | Volume/mute free; "Pro" extras paid. GitHub repo is Apache-2.0 but frozen at v1.3.2; current builds come from a private fork. | **Only when the target device has no hardware volume control.** Otherwise it forwards volume to the hardware. | Worked with the BTR5 in USB 2.0 mode. Used 2026-10-26 until replaced by Proxy Audio Device the same day; uninstalled. |
+| **Proxy Audio Device 1.1.0.1** | Unlicense (public domain) | **Always.** The driver multiplies samples by its own volume/mute controls and never touches the target's hardware volume. | **Current setup.** Verified by ear with eqMac quit; works in either BTR5 mode. Device renamed "FiiO BTR5 (Proxy)". |
 | **Background Music 0.5.0** | GPL-2.0 | **Never** for the main device, by design: it passes volume through to the real device's control. | Cannot work. Tried and removed. |
 | **SoundSource 6.1.5** | Proprietary, paid one-time license (trial available) | Yes, for any output. | Works per vendor claims, not open source. Not tried. |
 
@@ -21,7 +21,8 @@ volume control (which the firmware ignores, see [discovery](discovery.md)).
   while mute works.
 - Also: a full menu-bar app with EQ, launch-at-login via SMAppService, re-selects its own
   device as default output when another one is picked, but does not restore the system-sounds
-  output.
+  output. Removed on 2026-10-26 in favour of Proxy Audio Device (brew cask `--zap` plus manual
+  deletion of its HAL driver, LaunchDaemon plist and privileged helper).
 
 ## Proxy Audio Device
 
@@ -48,10 +49,17 @@ volume control (which the firmware ignores, see [discovery](discovery.md)).
   `bin/setdefault ProxyAudioDevice_UID`, `tools/test_tones.sh`. Routing confirmed (USB BTR5
   streaming, Bluetooth idle); the proxy device exposes per-channel volume (−25…0 dB) and mute.
   Default target after install was the *Bluetooth* BTR5 (it copies the current default output).
-- To switch to it from eqMac: quit eqMac, `brew uninstall --cask eqmac`, remove
-  `/Library/Audio/Plug-Ins/HAL/eqMac.driver` and restart `coreaudiod`; install the cask; choose
-  "FiiO BTR5" in the settings app; make "Proxy Audio Device" the default output **and** the
-  system-sounds output (`bin/setdefault <its UID>`); run `tools/test_tones.sh`.
+- Switching from eqMac (done 2026-10-26): quit eqMac; with admin rights remove
+  `/Library/Audio/Plug-Ins/HAL/eqMac.driver`, `/Library/LaunchDaemons/com.bitgapp.eqmac.helper.plist`
+  and `/Library/PrivilegedHelperTools/com.bitgapp.eqmac.helper`, then `killall coreaudiod`;
+  `brew uninstall --cask --zap eqmac`; re-pin the proxy device with
+  `bin/setdefault ProxyAudioDevice_UID` (Core Audio restarts fall back to the Bluetooth BTR5).
+- Configuration protocol (what `bin/padctl` implements): the driver's Box object
+  (UID `ProxyAudioBox_UID`) is the command channel. Setting `kAudioObjectPropertyIdentify` to the
+  caller's pid registers it as configurator; setting it to `-(ConfigType)` makes the next read of
+  the box's Name return that setting; setting the box's Name to `key=value`
+  (`outputDevice`, `deviceName`, `outputDeviceBufferFrameSize`, `outputDeviceActiveCondition`,
+  `outputDeviceHideWhenUnavailable`) changes it, persisted in Core Audio plug-in storage.
 
 ## Background Music
 
