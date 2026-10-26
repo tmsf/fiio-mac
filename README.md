@@ -97,6 +97,7 @@ Tested on macOS 27.0.1 (build 26A434), Apple Silicon MacBook Pro, eqMac 1.9.2, B
 | `bin/usbdesc` | Dumps and decodes the BTR5's USB configuration descriptors (UAC1 and UAC2 audio-class descriptors, feature units, formats, endpoints) via IOUSBLib. |
 | `bin/usbreenum` | Asks the USB host to re-enumerate the BTR5 (`USBDeviceReEnumerate`). Does **not** switch USB modes, a physical replug is needed for that. |
 | `bin/hidden` | Shows that `kAudioDevicePropertyIsHidden` exists but is not settable on the FiiO/eqMac devices. |
+| `bin/padctl` | Configures Proxy Audio Device from the shell (`status`, `set-output <UID>`, `set-buffer`, `set-name`, `set-active`, `set-hide`) using the same box-name protocol as its settings app. |
 | `tools/test_tones.sh` | The 3-step audible test (60 % / 10 % / muted) through the default output device. |
 | `tools/wait_and_probe.sh` | Waits for the BTR5 on USB, then dumps descriptors + CoreAudio controls. |
 | `tools/wait_reenum.sh` | Waits for a true re-enumeration (new IORegistry id), then dumps the same. |

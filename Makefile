@@ -1,6 +1,6 @@
 # Builds the CoreAudio / IOKit probe tools into ./bin (Xcode Command Line Tools required).
 BIN   := bin
-SWIFT := audioprops running setdefault hidden
+SWIFT := audioprops running setdefault hidden padctl
 C     := usbdesc usbreenum
 ALL   := $(addprefix $(BIN)/,$(SWIFT) $(C))
 

@@ -38,6 +38,16 @@ volume control (which the firmware ignores, see [discovery](discovery.md)).
 - Known issues relevant here: alert sounds at full volume after device changes (#48, same
   system-sounds drift as eqMac); an open PR to re-find devices after USB replugs (#71); a Tahoe
   "no audio" report closed as unrelated (#69).
+- **Install gotcha (2026-10-26):** the brew cask needs sudo to place the driver in
+  `/Library/Audio/Plug-Ins/HAL`; if that step is retried after a manual copy, brew nests a second
+  `ProxyAudioDevice.driver` inside the first and `codesign --verify` reports "unsealed contents
+  present in the bundle root", so coreaudiod silently refuses to load it (no "Core Audio Driver
+  (ProxyAudioDevice.driver)" process). Fix: keep exactly one signed bundle at that path, then
+  `sudo killall coreaudiod` (`launchctl kickstart` was refused by SIP here).
+- Tested standalone with eqMac quit: `bin/padctl set-output <BTR5 USB UID>`,
+  `bin/setdefault ProxyAudioDevice_UID`, `tools/test_tones.sh`. Routing confirmed (USB BTR5
+  streaming, Bluetooth idle); the proxy device exposes per-channel volume (−25…0 dB) and mute.
+  Default target after install was the *Bluetooth* BTR5 (it copies the current default output).
 - To switch to it from eqMac: quit eqMac, `brew uninstall --cask eqmac`, remove
   `/Library/Audio/Plug-Ins/HAL/eqMac.driver` and restart `coreaudiod`; install the cask; choose
   "FiiO BTR5" in the settings app; make "Proxy Audio Device" the default output **and** the
