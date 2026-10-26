@@ -1,0 +1,46 @@
+original registry id: id 0x100161e06
+re-enumerated after 304s (new id id 0x1001625d4, was id 0x100161e06); settling 5s
+
+########## USB NODE ##########
+  | +-o FiiO BTR5@01100000  <class IOUSBHostDevice, id 0x1001625d4, registered, matched, active, busy 0 (9 ms), retain 24>
+  |       "idProduct" = 71
+  |       "bcdDevice" = 47
+  |       "bNumConfigurations" = 1
+  |       "USB Product Name" = "FiiO BTR5"
+  |       "bcdUSB" = 512
+  |       "kUSBCurrentConfiguration" = 1
+  |       "Device Speed" = 1
+
+########## USB DESCRIPTORS ##########
+device 2972:0047 bcdDevice=002f  configurations=1  current bConfigurationValue=1
+
+### Configuration index 0: bConfigurationValue=1 wTotalLength=128 bNumInterfaces=2 bmAttributes=0xc0 maxPower=0mA
+  INTERFACE #0 alt 0 endpoints=0 class=1 sub=1 proto=0x00  [AudioControl UAC1]
+    AC HEADER bcdADC=0100 totalLen=40
+    INPUT_TERMINAL id=1 type=0x0101 (USB streaming) nChannels=2
+    FEATURE_UNIT id=10 source=1 bControlSize=1  <-- volume lives here (UAC1 bmaControls)
+      ch0 (master): mute=no  VOLUME=no  bass=no treble=no autoGain=no  raw=0x0
+      ch1 (channel): mute=YES  VOLUME=YES  bass=no treble=no autoGain=no  raw=0x3
+      ch2 (channel): mute=YES  VOLUME=YES  bass=no treble=no autoGain=no  raw=0x3
+    OUTPUT_TERMINAL id=6 type=0x0301 (speaker) sourceId=10
+  INTERFACE #1 alt 0 endpoints=0 class=1 sub=2 proto=0x00  [AudioStreaming]
+  INTERFACE #1 alt 1 endpoints=2 class=1 sub=2 proto=0x00  [AudioStreaming]
+    AS GENERAL terminal=1 delay=1 formatTag=0x0001
+    AS FORMAT_TYPE type=1 nChannels=2 subframe=3 bitRes=24 rates=44100,48000,88200,96000
+    ENDPOINT 0x01 attr=0x05 maxPacket=582 interval=1
+    CS_ENDPOINT raw=07 25 01 01 02 00 00
+    ENDPOINT 0x81 attr=0x01 maxPacket=3 interval=1
+
+########## COREAUDIO CONTROLS ##########
+== FiiO BTR5 1.1  [usb ] id=113 uid=AppleUSBAudioEngine:FiiO:FiiO BTR5:1100000:1 outChans=2
+   VirtualMainVolume: has=true settable=true val=0.063488126
+   ch0: no volume / mute / dB controls
+   ch1: volumeScalar has=true settable=true val=0.063488126 | dB has=true | mute has=true settable=true
+   ch2: volumeScalar has=true settable=true val=0.063488126 | dB has=true | mute has=true settable=true
+   control objects (5): mute/outp/el1, vlme/outp/el1, mute/outp/el2, vlme/outp/el2, evis/outp/el0
+== MacBook Pro Speakers [bltn] id=73 uid=BuiltInSpeakerDevice outChans=2
+
+########## osascript ##########
+output volume:6, input volume:50, alert volume:57, output muted:missing value
+
+

@@ -1,0 +1,36 @@
+installed after 1s; settling 5s
+== HAL driver ==
+total 0
+drwxr-xr-x  4 root  wheel  128 Oct 26 13:19 .
+drwxr-xr-x  6 root  wheel  192 Sep 24 09:10 ..
+drwxr-xr-x@ 3 root  wheel   96 Jun  9 15:39 Background Music Device.driver
+drwxr-xr-x  3 root  wheel   96 Sep 24 09:10 ParrotAudioPlugin.driver
+== app ==
+/Applications/Background Music.app
+93359 Core Audio Driver (Background Music Device.driver)
+== CoreAudio devices ==
+default output id=115 'FiiO BTR5 1.1 '   system-sounds output id=115 'FiiO BTR5 1.1 '
+  id=52 [hdmi] 'LG ULTRAFINE' runningSomewhere=0
+  id=122 [blue] 'FiiO BTR5' runningSomewhere=0  mainVol=0.4375  ch1: 0.0 dB (range -40.0…0.0 dB) mute=0  ch2: 0.0 dB (range -40.0…0.0 dB) mute=0
+  id=115 [usb ] 'FiiO BTR5 1.1 ' runningSomewhere=0  mainVol=0.5595511  ch1: -32.0 dB (range -127.0…0.0 dB) mute=0  ch2: -32.0 dB (range -127.0…0.0 dB) mute=0
+  id=92 [virt] 'Background Music' runningSomewhere=0  mainVol=0.0  ch0: -96.0 dB (range -96.0…0.0 dB) mute=0
+  id=98 [virt] 'Background Music (UI Sounds)' runningSomewhere=0  mainVol=1.0  ch0: 0.0 dB (range -96.0…0.0 dB) mute=0
+  id=103 [bltn] 'MacBook Pro Speakers' runningSomewhere=0  mainVol=0.4180804  ch0: -22.441448 dB (range -63.5…0.0 dB) mute=1
+== controls on BGM device ==
+== Background Music [virt] id=92 uid=BGMDevice outChans=2
+   VirtualMainVolume: has=true settable=true val=0.0
+   ch0: volumeScalar has=true settable=true val=0.0 | dB has=true | mute has=true settable=true
+   ch1: no volume / mute / dB controls
+   ch2: no volume / mute / dB controls
+   control objects (3): vlme/outp/el0, mute/outp/el0, evis/outp/el0
+== Background Music (UI Sounds) [virt] id=98 uid=BGMDevice_UISounds outChans=2
+   VirtualMainVolume: has=true settable=true val=1.0
+   ch0: volumeScalar has=true settable=true val=1.0 | dB has=true | mute has=false settable=false
+   ch1: no volume / mute / dB controls
+   ch2: no volume / mute / dB controls
+   control objects (2): vlme/outp/el0, evis/outp/el0
+== MacBook Pro Speakers [bltn] id=103 uid=BuiltInSpeakerDevice outChans=2
+== osascript ==
+output volume:56, input volume:50, alert volume:57, output muted:missing value
+
+

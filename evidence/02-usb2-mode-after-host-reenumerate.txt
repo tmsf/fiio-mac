@@ -1,0 +1,89 @@
+original registry id: id 0x100155102
+re-enumerated after 110s (new id id 0x100161e06, was id 0x100155102); settling 5s
+
+########## USB NODE ##########
+  | +-o FiiO BTR5@01100000  <class IOUSBHostDevice, id 0x100161e06, registered, matched, active, busy 0 (11 ms), retain 26>
+  |       "idProduct" = 71
+  |       "bcdDevice" = 46
+  |       "bNumConfigurations" = 2
+  |       "USB Product Name" = "FiiO BTR5"
+  |       "bcdUSB" = 512
+  |       "kUSBCurrentConfiguration" = 1
+  |       "Device Speed" = 2
+
+########## USB DESCRIPTORS ##########
+device 2972:0047 bcdDevice=002e  configurations=2  current bConfigurationValue=1
+
+### Configuration index 0: bConfigurationValue=1 wTotalLength=266 bNumInterfaces=3 bmAttributes=0xc0 maxPower=0mA
+  IAD firstIface=0 count=2 class=1 sub=0 proto=0x20
+  INTERFACE #0 alt 0 endpoints=0 class=1 sub=1 proto=0x20  [AudioControl UAC2]
+    AC HEADER bcdADC=0200 category=8 bmControls=0x00
+    CLOCK_SOURCE id=41 bmAttributes=0x03 bmControls=0x07
+    CLOCK_SELECTOR id=40 nInputs=1
+    INPUT_TERMINAL id=2 type=0x0101 (USB streaming) clock=40 nChannels=2 bmControls=0b 00
+    OUTPUT_TERMINAL id=20 type=0x0301 (speaker) sourceId=2 clock=40 bmControls=00 00
+  INTERFACE #1 alt 0 endpoints=0 class=1 sub=2 proto=0x20  [AudioStreaming]
+  INTERFACE #1 alt 1 endpoints=2 class=1 sub=2 proto=0x20  [AudioStreaming]
+    AS GENERAL terminal=2 bmControls=0x00 formatType=1 formats=0x00000001 nChannels=2
+    AS FORMAT_TYPE type=1 subslot=4 bitRes=32
+    ENDPOINT 0x01 attr=0x05 maxPacket=392 interval=1
+    CS_ENDPOINT raw=08 25 01 00 00 02 08 00
+    ENDPOINT 0x81 attr=0x11 maxPacket=4 interval=4
+  INTERFACE #1 alt 2 endpoints=2 class=1 sub=2 proto=0x20  [AudioStreaming]
+    AS GENERAL terminal=2 bmControls=0x00 formatType=1 formats=0x00000001 nChannels=2
+    AS FORMAT_TYPE type=1 subslot=2 bitRes=16
+    ENDPOINT 0x01 attr=0x05 maxPacket=196 interval=1
+    CS_ENDPOINT raw=08 25 01 00 00 02 08 00
+    ENDPOINT 0x81 attr=0x11 maxPacket=4 interval=4
+  INTERFACE #1 alt 3 endpoints=2 class=1 sub=2 proto=0x20  [AudioStreaming]
+    AS GENERAL terminal=2 bmControls=0x00 formatType=1 formats=0x80000000 nChannels=2
+    AS FORMAT_TYPE type=1 subslot=4 bitRes=32
+    ENDPOINT 0x01 attr=0x05 maxPacket=392 interval=1
+    CS_ENDPOINT raw=08 25 01 00 00 02 08 00
+    ENDPOINT 0x81 attr=0x11 maxPacket=4 interval=4
+  INTERFACE #2 alt 0 endpoints=0 class=254 sub=1 proto=0x01  [DFU / app-specific]
+    HID descriptor raw=09 21 07 fa 00 40 00 10 01
+
+### Configuration index 1: bConfigurationValue=1 wTotalLength=266 bNumInterfaces=3 bmAttributes=0xc0 maxPower=0mA
+  IAD firstIface=0 count=2 class=1 sub=0 proto=0x20
+  INTERFACE #0 alt 0 endpoints=0 class=1 sub=1 proto=0x20  [AudioControl UAC2]
+    AC HEADER bcdADC=0200 category=8 bmControls=0x00
+    CLOCK_SOURCE id=41 bmAttributes=0x03 bmControls=0x07
+    CLOCK_SELECTOR id=40 nInputs=1
+    INPUT_TERMINAL id=2 type=0x0101 (USB streaming) clock=40 nChannels=2 bmControls=0b 00
+    OUTPUT_TERMINAL id=20 type=0x0301 (speaker) sourceId=2 clock=40 bmControls=00 00
+  INTERFACE #1 alt 0 endpoints=0 class=1 sub=2 proto=0x20  [AudioStreaming]
+  INTERFACE #1 alt 1 endpoints=2 class=1 sub=2 proto=0x20  [AudioStreaming]
+    AS GENERAL terminal=2 bmControls=0x00 formatType=1 formats=0x00000001 nChannels=2
+    AS FORMAT_TYPE type=1 subslot=4 bitRes=32
+    ENDPOINT 0x01 attr=0x05 maxPacket=392 interval=1
+    CS_ENDPOINT raw=08 25 01 00 00 02 08 00
+    ENDPOINT 0x81 attr=0x11 maxPacket=4 interval=4
+  INTERFACE #1 alt 2 endpoints=2 class=1 sub=2 proto=0x20  [AudioStreaming]
+    AS GENERAL terminal=2 bmControls=0x00 formatType=1 formats=0x00000001 nChannels=2
+    AS FORMAT_TYPE type=1 subslot=2 bitRes=16
+    ENDPOINT 0x01 attr=0x05 maxPacket=196 interval=1
+    CS_ENDPOINT raw=08 25 01 00 00 02 08 00
+    ENDPOINT 0x81 attr=0x11 maxPacket=4 interval=4
+  INTERFACE #1 alt 3 endpoints=2 class=1 sub=2 proto=0x20  [AudioStreaming]
+    AS GENERAL terminal=2 bmControls=0x00 formatType=1 formats=0x80000000 nChannels=2
+    AS FORMAT_TYPE type=1 subslot=4 bitRes=32
+    ENDPOINT 0x01 attr=0x05 maxPacket=392 interval=1
+    CS_ENDPOINT raw=08 25 01 00 00 02 08 00
+    ENDPOINT 0x81 attr=0x11 maxPacket=4 interval=4
+  INTERFACE #2 alt 0 endpoints=0 class=254 sub=1 proto=0x01  [DFU / app-specific]
+    HID descriptor raw=09 21 07 fa 00 40 00 10 01
+
+########## COREAUDIO CONTROLS ##########
+== FiiO BTR5  [usb ] id=113 uid=AppleUSBAudioEngine:FiiO:FiiO BTR5:1100000:1 outChans=2
+   VirtualMainVolume: has=false settable=false val=0.0
+   ch0: no volume / mute / dB controls
+   ch1: no volume / mute / dB controls
+   ch2: no volume / mute / dB controls
+   control objects (2): clck/glob/el0, evis/outp/el0
+== MacBook Pro Speakers [bltn] id=73 uid=BuiltInSpeakerDevice outChans=2
+
+########## osascript ##########
+output volume:missing value, input volume:50, alert volume:57, output muted:missing value
+
+

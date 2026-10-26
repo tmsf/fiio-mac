@@ -1,0 +1,42 @@
+BTR5 back in USB 2.0 (UAC2) mode after 67s; settling 8s
+
+########## USB NODE ##########
+  | +-o FiiO BTR5@01100000  <class IOUSBHostDevice, id 0x100175d22, registered, matched, active, busy 0 (13 ms), retain 26>
+  |       "bcdDevice" = 46
+  |       "bNumConfigurations" = 2
+  |       "USB Product Name" = "FiiO BTR5"
+  |       "Device Speed" = 2
+
+########## eqMac processes ##########
+15157 /Applications/eqMac.app/Contents/MacOS/eqMac
+22797 Core Audio Driver (eqMac.driver)
+
+########## devices before fix ##########
+default output id=101 'FiiO BTR5 (eqMac)'   system-sounds output id=127 'FiiO BTR5'
+  id=112 [hdmi] 'LG ULTRAFINE' runningSomewhere=0
+  id=127 [blue] 'FiiO BTR5' runningSomewhere=1  mainVol=0.4375  ch1: 0.0 dB (range -40.0…0.0 dB) mute=0  ch2: 0.0 dB (range -40.0…0.0 dB) mute=0
+  id=138 [usb ] 'FiiO BTR5 ' runningSomewhere=0
+  id=89 [bltn] 'MacBook Pro Speakers' runningSomewhere=0  mainVol=0.41710067  ch0: -22.489584 dB (range -63.5…0.0 dB) mute=1
+  id=101 [usb ] 'FiiO BTR5 (eqMac)' runningSomewhere=1  mainVol=0.4375  ch0: -7.1804385 dB (range -96.0…0.0 dB) mute=0
+
+########## BTR5 controls (expect NO volume) ##########
+
+########## ensure eqMac device is default + system output ##########
+set default output -> id 101: ok
+set system output -> id 101: ok
+default output id=101 'FiiO BTR5 (eqMac)'   system-sounds output id=101 'FiiO BTR5 (eqMac)'
+
+########## audible test: 60% / 10% / muted ##########
+
+########## devices after test ##########
+default output id=101 'FiiO BTR5  (eqMac)'   system-sounds output id=138 'FiiO BTR5 '
+  id=112 [hdmi] 'LG ULTRAFINE' runningSomewhere=0
+  id=127 [blue] 'FiiO BTR5' runningSomewhere=0  mainVol=0.6  ch1: 0.0 dB (range -40.0…0.0 dB) mute=0  ch2: 0.0 dB (range -40.0…0.0 dB) mute=0
+  id=138 [usb ] 'FiiO BTR5 ' runningSomewhere=1
+  id=89 [bltn] 'MacBook Pro Speakers' runningSomewhere=0  mainVol=0.41710067  ch0: -22.489584 dB (range -63.5…0.0 dB) mute=1
+  id=101 [usb ] 'FiiO BTR5  (eqMac)' runningSomewhere=1  mainVol=0.4  ch0: -7.9588003 dB (range -96.0…0.0 dB) mute=0
+
+########## osascript ##########
+output volume:40, input volume:50, alert volume:57, output muted:false
+
+

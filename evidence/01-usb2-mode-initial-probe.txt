@@ -1,0 +1,25 @@
+FiiO present after 1s; settling 4s
+
+########## USB DESCRIPTORS ##########
+FiiO not found
+
+########## COREAUDIO CONTROLS ##########
+== FiiO BTR5  [usb ] id=96 uid=AppleUSBAudioEngine:FiiO:FiiO BTR5:1100000:1 outChans=2
+   VirtualMainVolume: has=false settable=false val=0.0
+   ch0: no volume / mute / dB controls
+   ch1: no volume / mute / dB controls
+   ch2: no volume / mute / dB controls
+   control objects (2): clck/glob/el0, evis/outp/el0
+== MacBook Pro Speakers [bltn] id=73 uid=BuiltInSpeakerDevice outChans=2
+
+########## USB NODE ##########
+  | +-o FiiO BTR5@01100000  <class IOUSBHostDevice, id 0x100155102, registered, matched, active, busy 0 (11 ms), retain 28>
+  |       "idProduct" = 71
+  |       "bcdDevice" = 46
+  |       "bNumConfigurations" = 2
+  |       "USB Product Name" = "FiiO BTR5"
+  |       "bcdUSB" = 512
+  |       "kUSBCurrentConfiguration" = 1
+  |       "Device Speed" = 2
+
+
