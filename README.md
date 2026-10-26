@@ -95,12 +95,21 @@ still the better mode (32-bit, higher rates); USB 1.0 caps at 24-bit/96 kHz.
   CoreAudio's `IsHidden` flag is owned by Apple's USB audio driver and is read-only
   (`bin/hidden` demonstrates this). Only the Bluetooth entry can be removed, by disconnecting
   Bluetooth. `bin/padctl set-hide 1` makes the Proxy entry disappear while the BTR5 is unplugged.
-- **Sound went quiet or ignores the keys** → Core Audio restarted and macOS fell back to the
-  Bluetooth BTR5, or something selected the raw USB device. Run `bin/setdefault
-  ProxyAudioDevice_UID` (or pick "FiiO BTR5 (Proxy)" in the Sound menu and fix Sound Effects).
-- **Alerts suddenly at full volume** → the system-sounds output drifted to the raw device. Same
-  fix as above.
-- **Pops or crackle** → raise the buffer: `bin/padctl set-buffer 1024` (default 512).
+- **Sound went quiet or ignores the keys / alerts suddenly at full volume** → Core Audio
+  restarted and macOS fell back to the Bluetooth BTR5, or something selected the raw USB device,
+  or the system-sounds output drifted. Fix:
+
+  ```sh
+  make fix-output        # = tools/fix_output.sh: re-targets the proxy at the USB BTR5 and pins it as default + system output
+  ```
+
+- **Pops or crackle** → raise the proxy buffer (driver default 512):
+
+  ```sh
+  make fix-crackle                 # = tools/fix_crackle.sh, sets 1024
+  make fix-crackle FRAMES=2048     # or any frame count
+  ```
+
 - **Volume feels coarse at the low end** → the proxy's control spans −25…0 dB and the lowest
   non-muted step is already quiet; that is how the driver maps the slider.
 - `bin/running` shows which device is actually streaming (`runningSomewhere=1`); the raw USB
@@ -119,6 +128,8 @@ still the better mode (32-bit, higher rates); USB 1.0 caps at 24-bit/96 kHz.
 | `bin/usbdesc` | Dumps and decodes the BTR5's USB configuration descriptors (UAC1 and UAC2 audio-class descriptors, feature units, formats, endpoints) via IOUSBLib. |
 | `bin/usbreenum` | Asks the USB host to re-enumerate the BTR5 (`USBDeviceReEnumerate`). Does **not** switch USB modes, a physical replug is needed for that. |
 | `bin/hidden` | Shows that `kAudioDevicePropertyIsHidden` exists but is not settable on the FiiO devices. |
+| `tools/fix_output.sh` | Quirk fix: re-targets the proxy at the USB BTR5 and pins it as default + system-sounds output (`make fix-output`). |
+| `tools/fix_crackle.sh [frames]` | Quirk fix: raises the proxy buffer, default 1024 (`make fix-crackle`). |
 | `tools/test_tones.sh` | The 3-step audible test (60 % / 10 % / muted) through the default output device. |
 | `tools/wait_and_probe.sh` | Waits for the BTR5 on USB, then dumps descriptors + CoreAudio controls. |
 | `tools/wait_reenum.sh` | Waits for a true re-enumeration (new IORegistry id), then dumps the same. |

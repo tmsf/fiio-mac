@@ -21,4 +21,11 @@ $(BIN):
 clean:
 	rm -rf $(BIN)
 
-.PHONY: all clean
+# Quirk fixes (see README "Things to know day to day")
+fix-output: all
+	tools/fix_output.sh
+
+fix-crackle: all
+	tools/fix_crackle.sh $(FRAMES)
+
+.PHONY: all clean fix-output fix-crackle
