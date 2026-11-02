@@ -63,6 +63,10 @@ BTR5 USB id `2972:0047`.
 
    (The bundled "Proxy Audio Device Settings" app does the same with a GUI.)
 
+   Copy the UID from `bin/audioprops`, not from this example. The middle number is the USB
+   location id and changes when the BTR5 goes into another port or hub; see
+   [Troubleshooting](#troubleshooting).
+
 4. **Make it the output for everything, including alert sounds.** Alerts otherwise bypass the
    volume control and play at full BTR5 volume.
 
@@ -88,6 +92,73 @@ BTR5 USB id `2972:0047`.
 The BTR5's USB mode (`U-AUDIO` menu) does not matter for volume with this setup. USB 2.0 is
 still the better mode (32-bit, higher rates); USB 1.0 caps at 24-bit/96 kHz.
 
+## Troubleshooting
+
+**Start here, whatever the symptom:**
+
+```sh
+bin/padctl status      # where is the proxy sending audio?
+bin/running            # what is the default / system-sounds output, and what is streaming?
+```
+
+In most failures, either `bin/padctl status` shows `-> <not present>` or `bin/running` does not
+show "FiiO BTR5 (Proxy)" as default output. `make fix-output` fixes both cases.
+
+### No sound at all on "FiiO BTR5 (Proxy)", but the raw "FiiO BTR5" plays fine
+
+The proxy is set to a USB device UID that no longer exists. The BTR5's UID contains the
+**USB location id** of the port it is plugged into:
+
+```
+AppleUSBAudioEngine:FiiO:FiiO BTR5:<location id>:1
+```
+
+Plugging it into a different port, hub or dock (or the hub enumerating differently) changes
+that number, for example `1100000` → `100000`. The proxy keeps the old UID, has nowhere to send
+audio, and stays silent. macOS gives no error. The raw device still works because macOS
+resolves it by its current UID.
+
+How to recognise it: the target shows as `<not present>`:
+
+```
+$ bin/padctl status
+outputDevice UID:    AppleUSBAudioEngine:FiiO:FiiO BTR5:1100000:1   -> <not present>
+```
+
+Fix (looks up the current USB UID and points the proxy at it):
+
+```sh
+make fix-output
+```
+
+or by hand:
+
+```sh
+bin/audioprops | grep 'usb '                                   # current UID of the raw BTR5
+bin/padctl set-output 'AppleUSBAudioEngine:FiiO:FiiO BTR5:<location id>:1'
+bin/padctl status                                              # must now end in "-> FiiO BTR5"
+afplay bin/tone.wav                                            # should be audible
+```
+
+Keeping the BTR5 on the same port avoids this. Run `make fix-output` again after moving it.
+
+### Sound went quiet, volume keys ignored, or alerts at full volume
+
+Core Audio restarted and macOS fell back to the Bluetooth BTR5, something selected the raw USB
+device, or the system-sounds output drifted. Run `make fix-output`.
+
+### "FiiO BTR5 (Proxy)" is missing from the Sound menu, or `bin/padctl status` finds no box
+
+The driver is not loaded. Check with
+`pgrep -fl 'Core Audio Driver (ProxyAudioDevice'` and the `codesign --verify` command in
+setup step 2. Keep one signed bundle in `/Library/Audio/Plug-Ins/HAL`, then
+`sudo killall coreaudiod`.
+
+### USB mode change in the BTR5 menu has no effect
+
+It needs a physical replug; `bin/usbreenum` is not enough. The replug can also give the device
+a new UID, so check `bin/padctl status` afterwards.
+
 ## Things to know day to day
 
 - **Three "FiiO BTR5" entries in the Sound menu** are expected: Bluetooth, the raw USB device
@@ -95,14 +166,9 @@ still the better mode (32-bit, higher rates); USB 1.0 caps at 24-bit/96 kHz.
   CoreAudio's `IsHidden` flag is owned by Apple's USB audio driver and is read-only
   (`bin/hidden` demonstrates this). Only the Bluetooth entry can be removed, by disconnecting
   Bluetooth. `bin/padctl set-hide 1` makes the Proxy entry disappear while the BTR5 is unplugged.
-- **Sound went quiet or ignores the keys / alerts suddenly at full volume** → Core Audio
-  restarted and macOS fell back to the Bluetooth BTR5, or something selected the raw USB device,
-  or the system-sounds output drifted. Fix:
-
-  ```sh
-  make fix-output        # = tools/fix_output.sh: re-targets the proxy at the USB BTR5 and pins it as default + system output
-  ```
-
+- **Sound stopped, went quiet or ignores the keys** → see [Troubleshooting](#troubleshooting);
+  `make fix-output` (= `tools/fix_output.sh`) re-targets the proxy at the current USB BTR5 UID
+  and pins it as default + system-sounds output.
 - **Pops or crackle** → raise the proxy buffer (driver default 512):
 
   ```sh
@@ -137,7 +203,8 @@ still the better mode (32-bit, higher rates); USB 1.0 caps at 24-bit/96 kHz.
 | `tools/make_tone.py` | Generates the 4 s / 440 Hz / 48 kHz stereo test tone (`bin/tone.wav`). |
 
 Device UIDs seen on this machine: raw BTR5 `AppleUSBAudioEngine:FiiO:FiiO BTR5:1100000:1`
-(the `1100000` part is the USB location id, it changes with the port), proxy
+and, on another port, `…:100000:1` (the middle part is the USB location id; when it changes the
+proxy goes silent, see [Troubleshooting](#troubleshooting)), proxy
 `ProxyAudioDevice_UID`, proxy box `ProxyAudioBox_UID`.
 
 ## Repo layout
